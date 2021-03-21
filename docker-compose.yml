@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  main:
+    container_name: walmart-front
+    build:
+      context: .
+      target: build
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 8080:4200
+    command: npm run start
+    networks:
+      - webnet
+networks:
+  webnet:
+volumes:
+  pgdata:
