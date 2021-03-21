@@ -1,0 +1,19 @@
+<!-- <div class="col-3 card-deck mb-2 text-center"> -->
+    <div class="card mb-2 box-shadow">
+        <div class="card-header">
+            <h5 class="my-0 font-weight-normal">{{product.description}}</h5>
+        </div>
+        <div class="card-body">
+            <img src="http://www.lider.cl/catalogo/images/catalogo_no_photo.jpg" class="img-fluid" alt="Responsive image">
+            <h5 class="card-title pricing-card-title">{{product.price | currency:"CLP":"$"}} <small class="text-muted"></small></h5>
+            <small><span>Marca: <strong>{{product.brand}}</strong></span> <br /> </small>
+
+            <div class="input-group mb-3">
+                <input type="number" class="form-control" placeholder="Cantidad" min="1" oninput="validity.valid||(value='');">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-primary" type="button" (click)="addItemAction()">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- </div> -->
