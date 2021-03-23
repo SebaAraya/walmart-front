@@ -1,7 +1,17 @@
 .shoppingCart{
     width: 500px;
     .body{
-        min-height: 300px;
+        min-height: 200px;
+        max-height: 500px;
     }
     
+}
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.42857;
 }

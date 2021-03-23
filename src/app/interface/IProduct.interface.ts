@@ -5,3 +5,8 @@ export interface IProduct {
     readonly image: string
     readonly price: number
 }
+
+export interface IProductResumeByBrand {
+    readonly brand: string
+    readonly amount: number
+}

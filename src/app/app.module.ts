@@ -30,7 +30,7 @@ import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.
     FormsModule,
     CommonModule,
     BrowserAnimationsModule, // required animations module
-    ToastrModule.forRoot({timeOut: 1500}), // ToastrModule added
+    ToastrModule.forRoot({timeOut: 1500, positionClass: 'toast-bottom-right'}), // ToastrModule added
   ],
   providers: [],
   bootstrap: [AppComponent]

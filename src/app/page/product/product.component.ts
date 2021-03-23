@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IProduct } from 'src/app/interface/IProduct.interface';
+import { IProduct, IProductResumeByBrand } from 'src/app/interface/IProduct.interface';
 import { ProductService } from 'src/app/providers/product.service';
 import { IShoppingCart } from 'src/app/interface/IShoppingCart.interface';
 import { IPromotion } from 'src/app/interface/IPromotion.interface';
+import { DiscountService } from 'src/app/providers/discount.service';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-product',
@@ -18,7 +20,7 @@ export class ProductComponent implements OnInit {
   total: number= 0;
   promotions: IPromotion[] = []
 
-  constructor(private productService: ProductService) { }
+  constructor(private productService: ProductService, private discountService: DiscountService) { }
 
   ngOnInit(): void {
     this.shoppingCart = [] ;
@@ -41,21 +43,39 @@ export class ProductComponent implements OnInit {
 
   addItem(product: IProduct, amount: number){
     this.shoppingCart.push({product, amount})
-    this.total += product.price * amount
+    this.findAndApplyDiscount();
   }
 
   changeItem(id, shopNewProd: IShoppingCart){
     let shopProd:IShoppingCart = this.shoppingCart.find((prod:IShoppingCart) => prod.product.id === id)
     shopProd = shopNewProd;
-    
-    this.calculateTotalAmount();
-    
+    this.findAndApplyDiscount();
   }
-  calculateTotalAmount(){
+
+  deleteProduct(index){
+    this.shoppingCart.splice(index,1);
+    this.findAndApplyDiscount();
+  }
+
+  async findAndApplyDiscount(){
     let newTotal = 0;
+    let brandAmountMap: Map<string, number> = new Map();
     for (const shopProd of this.shoppingCart) {
-      newTotal += shopProd.amount * shopProd.product.price 
+      let totalProduct = shopProd.amount * shopProd.product.price 
+      if(brandAmountMap[shopProd.product.brand]) brandAmountMap[shopProd.product.brand] += totalProduct
+      else{ brandAmountMap[shopProd.product.brand] = totalProduct}
+      newTotal += totalProduct 
     }
+    let resumeBrandAmount: IProductResumeByBrand[] = []
+
+    for (var key in brandAmountMap){
+      resumeBrandAmount.push({brand: key,amount: brandAmountMap[key]})
+    }
+
+    this.promotions = await this.discountService.findByBrandAndAmount(resumeBrandAmount)
+    const discount = this.promotions.find(prom => prom.type ==='DISCOUNT')
+
+    if(discount) newTotal -= discount.totalDiscount
     this.total = newTotal;
   }
 }

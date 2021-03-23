@@ -19,9 +19,14 @@ export class ShoppingCartComponent implements OnInit {
   @Input()
   promotions: IPromotion[]
 
+  @Output() deleteProduct: EventEmitter<number> = new EventEmitter();
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  deleteItem(itemIndex){
+    this.deleteProduct.emit(itemIndex); 
+  }
 }

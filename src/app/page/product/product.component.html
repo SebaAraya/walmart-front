@@ -12,7 +12,8 @@
                 [shoppingCart]="shoppingCart" 
                 [total] = "total"
                 [promotions] = "promotions"
-                ></app-shopping-cart>
+                (deleteProduct) = "deleteProduct($event)"
+            ></app-shopping-cart>
         </div>
     </div>
     
@@ -32,6 +33,5 @@
         </app-product-card>
     </div>
 </div>
-
 
 

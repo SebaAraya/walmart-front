@@ -1,50 +1,43 @@
 
 
 <div class="shoppingCart" *ngIf="shoppingCart">
-    <div class="body" *ngIf="shoppingCart.length==0">
-        <div class="col-12 text-center font-weight-light"> 
+    <div class="body d-flex" *ngIf="shoppingCart.length==0">
+        <div class="d-flex flex-grow-1 align-self-center justify-content-center font-weight-light"> 
             Sin productos
         </div>
     </div>
 
     <div class="body overflow-auto" *ngIf="shoppingCart.length>0">
-        <ng-container *ngFor="let shoppingProduct of shoppingCart">
+        <ng-container *ngFor="let shoppingProduct of shoppingCart; let i = index">
             <div class="row w-100 p-2 m-0" >
-                <div class="col-1"> 
-                    -
-                </div>
-                <div class="col-1"> 
-                    {{shoppingProduct.amount}}
-                </div>
-                <div class="col-1"> 
-                    +
-                </div>
-        
                 <div class="col-8"> 
-                    {{shoppingProduct.product.description}} 
+                   ({{shoppingProduct.amount}}) {{shoppingProduct.product.description}} 
                 </div>
-                <div class="col-1"> 
-                    X
+                <div class="col-3 text-right">
+                    {{ (shoppingProduct.product.price * shoppingProduct.amount) | currency: 'CLP': '$' }} 
                 </div>
+                <div class="col-1 px-0"> 
+                    <button type="button" class="btn btn-danger btn-circle" (click)="deleteItem(i)">X</button>
                 </div>
+            </div>
             <div class="dropdown-divider"></div>
         </ng-container>
 
-        <div class= "p-2 text-primary">
-            <ng-container *ngFor="let promotion of promotions">
-                <small *ngIf="promotion.type==='DISCOUNT'" class="display-block-inline">Se aplicó un 
-                    descuento de {{promotion.totalDiscount | currency: 'CLP': '$'}} por haber comprado
-                    {{promotion.price | currency: 'CLP': '$'}} de productos {{promotion.brand}}!</small> <br />
-                <small *ngIf="promotion.type==='OFFER'" class="display-block-inline">
-                    Agrega {{promotion.price | currency: 'CLP': '$'}} más en productos {{promotion.brand}} y aprovecha un
-                    descuento total de {{promotion.totalDiscount | currency: 'CLP': '$'}} en tu compra!</small> <br />
-            </ng-container>
-
-        </div>
+        
+    </div>
+    
+    <div class="p-2 text-primary" *ngIf="shoppingCart.length>0">
+        <ng-container *ngFor="let promotion of promotions">
+            <small *ngIf="promotion.type==='DISCOUNT'" class="d-flex px-1 display-block">Se aplicó un 
+                descuento de {{promotion.totalDiscount | currency: 'CLP': '$'}} por haber comprado
+                {{promotion.price | currency: 'CLP': '$'}} de productos {{promotion.brand}}!</small>
+            <small *ngIf="promotion.type==='OFFER'" class="d-flex px-1 display-block">
+                Agrega {{promotion.price | currency: 'CLP': '$'}} más en productos {{promotion.brand}} y aprovecha un
+                descuento total de {{promotion.totalDiscount | currency: 'CLP': '$'}} en tu compra!</small>
+        </ng-container>
 
     </div>
 
-    
     
     <button ngbDropdownItem *ngIf="shoppingCart.length>0"><strong>Total: </strong> {{total | currency: 'CLP':'$'}}</button>
 
